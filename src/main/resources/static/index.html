@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ledger — Student Course &amp; Grade Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="wordmark">
+      <span class="wordmark-mark">§</span>
+      <div>
+        <h1>Ledger</h1>
+        <p class="tagline">Student Course &amp; Grade Register</p>
+      </div>
+    </div>
+    <div class="masthead-status">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">checking API…</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button class="tab active" data-tab="students" role="tab" aria-selected="true">01 · Students</button>
+  <button class="tab" data-tab="courses" role="tab" aria-selected="false">02 · Courses</button>
+  <button class="tab" data-tab="enrollments" role="tab" aria-selected="false">03 · Enrollments &amp; Grades</button>
+</nav>
+
+<main>
+
+  <!-- ============ STUDENTS ============ -->
+  <section id="panel-students" class="panel active">
+    <div class="panel-grid">
+      <form id="studentForm" class="card form-card">
+        <h2>Register a student</h2>
+        <input type="hidden" id="studentId" />
+        <label>Registration No. <input required id="regNumber" placeholder="REG-2026-001" /></label>
+        <div class="field-row">
+          <label>First name <input required id="firstName" placeholder="Amara" /></label>
+          <label>Last name <input required id="lastName" placeholder="Nwosu" /></label>
+        </div>
+        <label>Email <input required type="email" id="email" placeholder="amara.nwosu@campus.edu" /></label>
+        <div class="field-row">
+          <label>Major <input id="major" placeholder="Computer Science" /></label>
+          <label>Date of birth <input type="date" id="dob" /></label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="studentSubmitBtn">Add student</button>
+          <button type="button" class="btn-ghost" id="studentResetBtn">Clear</button>
+        </div>
+        <p class="form-msg" id="studentMsg"></p>
+      </form>
+
+      <div class="card table-card">
+        <div class="table-card-head">
+          <h2>Roll</h2>
+          <span class="count-pill" id="studentCount">0 students</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Reg. No.</th><th>Name</th><th>Major</th><th>GPA</th><th></th></tr>
+          </thead>
+          <tbody id="studentsTbody"></tbody>
+        </table>
+        <p class="empty-state" id="studentsEmpty" hidden>No students registered yet — add the first entry on the left.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COURSES ============ -->
+  <section id="panel-courses" class="panel">
+    <div class="panel-grid">
+      <form id="courseForm" class="card form-card">
+        <h2>Add a course</h2>
+        <input type="hidden" id="courseId" />
+        <label>Course code <input required id="courseCode" placeholder="CS-301" /></label>
+        <label>Title <input required id="courseTitle" placeholder="Database Systems" /></label>
+        <div class="field-row">
+          <label>Credit hours <input required type="number" min="1" id="creditHours" value="3" /></label>
+          <label>Department <input id="department" placeholder="Computer Science" /></label>
+        </div>
+        <label>Description <textarea id="courseDescription" rows="2" placeholder="Optional course description"></textarea></label>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="courseSubmitBtn">Add course</button>
+          <button type="button" class="btn-ghost" id="courseResetBtn">Clear</button>
+        </div>
+        <p class="form-msg" id="courseMsg"></p>
+      </form>
+
+      <div class="card table-card">
+        <div class="table-card-head">
+          <h2>Catalog</h2>
+          <span class="count-pill" id="courseCount">0 courses</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Code</th><th>Title</th><th>Credits</th><th>Enrolled</th><th></th></tr>
+          </thead>
+          <tbody id="coursesTbody"></tbody>
+        </table>
+        <p class="empty-state" id="coursesEmpty" hidden>No courses in the catalog yet — add the first one on the left.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ENROLLMENTS ============ -->
+  <section id="panel-enrollments" class="panel">
+    <div class="panel-grid">
+      <form id="enrollForm" class="card form-card">
+        <h2>Enroll &amp; grade</h2>
+        <label>Student <select required id="enrollStudent"></select></label>
+        <label>Course <select required id="enrollCourse"></select></label>
+        <div class="field-row">
+          <label>Semester <input required id="semester" placeholder="Fall2026" /></label>
+          <label>Grade <select id="enrollGrade">
+            <option value="NOT_GRADED">Not graded yet</option>
+            <option value="A_PLUS">A+</option>
+            <option value="A">A</option>
+            <option value="A_MINUS">A-</option>
+            <option value="B_PLUS">B+</option>
+            <option value="B">B</option>
+            <option value="B_MINUS">B-</option>
+            <option value="C_PLUS">C+</option>
+            <option value="C">C</option>
+            <option value="C_MINUS">C-</option>
+            <option value="D">D</option>
+            <option value="F">F</option>
+          </select></label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Enroll student</button>
+        </div>
+        <p class="form-msg" id="enrollMsg"></p>
+      </form>
+
+      <div class="card table-card">
+        <div class="table-card-head">
+          <h2>Gradebook</h2>
+          <span class="count-pill" id="enrollCount">0 entries</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Student</th><th>Course</th><th>Semester</th><th>Grade</th><th></th></tr>
+          </thead>
+          <tbody id="enrollTbody"></tbody>
+        </table>
+        <p class="empty-state" id="enrollEmpty" hidden>No enrollments recorded yet.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Ledger — coursework project · REST API at <code>/api</code> · errors surfaced live, never silent</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
